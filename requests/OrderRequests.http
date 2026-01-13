@@ -1,0 +1,7 @@
+
+@customerId = cd760937-fca4-49c4-bd46-da6b8b896585
+@BaseUrl = https://localhost:7262/api/customers/cd760937-fca4-49c4-bd46-da6b8b896585/orders
+
+###
+GET {{BaseUrl}}
+

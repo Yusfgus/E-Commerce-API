@@ -1,0 +1,52 @@
+@BaseUrl = https://localhost:7262/api/auth
+
+@AccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwYTA1N2JhOC1hOWJkLTQxZDMtYTZkZi05ZTEzN2FmMTU1YzYiLCJlbWFpbCI6InlvdXNlZmd1czExMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDdXN0b21lciIsImV4cCI6MTc2ODE4NjQxMSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.DVHNjIQnKvjoCKKaCnoQ5Zaj-fHo5fDXNtQBjpz9Lik
+@RefreshToken = fX08G5gQN/sokOTcWe35f1xDkcHo60Y+KqIteet8jjU=
+
+
+###
+POST {{BaseUrl}}/login/
+Content-Type: application/json
+
+{
+    "Email": "yousefgus111@gmail.com",
+    "Password": "gus123"
+}
+
+
+###
+POST {{BaseUrl}}/register/customer
+Content-Type: application/json
+
+{
+    "FirstName": "Yousef",
+    "LastName": "Mohamed",
+    "Email": "yousefgus111@gmail.com",
+    "Password": "gus123",
+    "PhoneNumber": "+20 01158689513"
+}
+
+
+###
+POST {{BaseUrl}}/register/vendor
+Content-Type: application/json
+
+{
+    "Email": "mostafagmail.com",
+    "PhoneNumber": "+20 01095008854",
+    "StoreName": "El-Fat7 Store"
+}
+
+
+###
+GET  {{BaseUrl}}/private-data
+Authorization: Bearer {{AccessToken}}
+
+
+###
+POST {{BaseUrl}}/refresh
+Content-Type: application/json
+
+{
+    "RefreshToken": "{{RefreshToken}}"
+}

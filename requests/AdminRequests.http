@@ -1,0 +1,33 @@
+@BaseUrl = https://localhost:7262/api/Admin
+
+@GusId = 0a057ba8-a9bd-41d3-a6df-9e137af155c6
+@AwadId = 771a9fcf-4417-4e25-9422-ff72fb10106d
+
+
+###
+GET {{BaseUrl}}/users
+
+
+###
+GET {{BaseUrl}}/users/{{GusId}}
+
+
+###
+GET {{BaseUrl}}/users/{{AwadId}}
+
+
+###
+DELETE {{BaseUrl}}/users/{{GusId}}
+
+
+###
+DELETE {{BaseUrl}}/users/{{AwadId}}
+
+
+###
+POST {{BaseUrl}}/users/{{GusId}}/deactivate
+
+
+###
+POST {{BaseUrl}}/users/{{GusId}}/activate
+
