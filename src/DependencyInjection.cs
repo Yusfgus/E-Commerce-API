@@ -29,6 +29,7 @@ public static class DependencyInjection
             .AddAppServices()
             .AddJwtAuthentication(configuration)
             .AddFluentValidation()
+            .AddSwagger()
             .AddOtherServices(configuration);
     }
 
@@ -132,4 +133,14 @@ public static class DependencyInjection
 
         return services;
     }
+    private static IServiceCollection AddSwagger(this IServiceCollection services)
+    {
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+
+        return services;
+    }
+
 }
+
+
