@@ -1,4 +1,4 @@
-@BaseUrl = https://localhost:7262/api/auth
+@BaseUrl = https://localhost:7262/api/categories
 
 @GusAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjBhMDU3YmE4LWE5YmQtNDFkMy1hNmRmLTllMTM3YWYxNTVjNiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InlvdXNlZmd1czExMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDdXN0b21lciIsImV4cCI6MTc2ODYwNTc5MSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.6KqW-suNFk9f7U2X-5zUP1NSy6xPUFDOB2lv6Ka2L_w
 @GusRefreshToken = rpqLauLtjsYsL5dLu/Nu4cKlfdr7YLqI6+BRN2VYofo=
@@ -9,70 +9,39 @@
 @AdminAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjhiYzVlMTQ4LTYxN2EtNDhhYi1hNmVjLTNhOTJmZjU4Yzk0ZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc2ODY1NDM5MywiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.Kwngl3eUlIY8Les6G2JGJo5OuS35NuM4PU8Dw3fasVw
 @AdminRefreshToken = FP6Tb+sZf4dAE1PCDSCUn8Blax6aV1Y3J6rfgJAjRbI=
 
-
-###
-POST {{BaseUrl}}/login/
-Content-Type: application/json
-
-# {
-#     "Email": "yousefgus111@gmail.com",
-#     "Password": "gus123"
-# }
-# {
-#     "Email": "mawad@gmail.com",
-#     "Password": "awad123"
-# }
-{
-    "Email": "admin1@gmail.com",
-    "Password": "admin"
-}
+@CategoryId = 4e7d91c8-5cf4-42cd-96bb-d6b888b87e5b
 
 
 ###
-POST {{BaseUrl}}/register/customer
-Content-Type: application/json
-
-{
-    "FirstName": "Yousef",
-    "LastName": "Mohamed",
-    "Email": "yousefgus111@gmail.com",
-    "Password": "gus123",
-    "PhoneNumber": "+2001158689513"
-}
+GET {{BaseUrl}}/?page=1&pageSize=10
+Authorization: Bearer {{GusAccessToken}}
 
 
 ###
-POST {{BaseUrl}}/register/vendor
-Content-Type: application/json
-
-{
-    "Email": "mostafagmail.com",
-    "PhoneNumber": "+2001095008854",
-    "StoreName": "El-Fat7 Store"
-}
-
-
-###
-POST {{BaseUrl}}/register/admin
-Authorization: Bearer {{AdminAccessToken}}
-Content-Type: application/json
-
-{
-    "Email": "admin1@gmail.com",
-    "Password": "admin",
-    "PhoneNumber": "+2001158689555"
-}
-
-
-###
-GET  {{BaseUrl}}/private-data
+GET {{BaseUrl}}/{{CategoryId}}
 Authorization: Bearer {{AwadAccessToken}}
 
 
 ###
-POST {{BaseUrl}}/refresh
+POST {{BaseUrl}}/
+Authorization: Bearer {{AdminAccessToken}}
 Content-Type: application/json
 
 {
-    "RefreshToken": "{{GusRefreshToken}}"
+    "Name": "Toys & Games"
 }
+
+
+###
+PUT {{BaseUrl}}/
+Authorization: Bearer {{AdminAccessToken}}
+Content-Type: application/json
+
+{
+
+}
+
+
+###
+DELETE {{BaseUrl}}/{{CategoryId}}
+Authorization: Bearer {{AdminAccessToken}}

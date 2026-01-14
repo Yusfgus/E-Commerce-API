@@ -23,7 +23,7 @@ public class AuthService(IUserRepository userRepo,
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var userResult = await RegisterUserAsync(request, ct);
+        var userResult = await RegisterUserAsync(request, UserRole.Customer, ct);
 
         if (userResult.IsFailure)
         {
@@ -61,7 +61,7 @@ public class AuthService(IUserRepository userRepo,
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var userResult = await RegisterUserAsync(request, ct);
+        var userResult = await RegisterUserAsync(request, UserRole.Vendor, ct);
 
         if (userResult.IsFailure)
         {
@@ -96,7 +96,7 @@ public class AuthService(IUserRepository userRepo,
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var userResult = await RegisterUserAsync(request, ct);
+        var userResult = await RegisterUserAsync(request, UserRole.Admin, ct);
 
         if (userResult.IsFailure)
         {
@@ -126,7 +126,7 @@ public class AuthService(IUserRepository userRepo,
         return admin.ToDto();
     }
 
-    private async Task<Result<User>> RegisterUserAsync(RegisterUserRequest request, CancellationToken ct)
+    private async Task<Result<User>> RegisterUserAsync(RegisterUserRequest request, UserRole role, CancellationToken ct)
     {
         if (await userRepo.IsEmailExist(request.Email, ct))
             return UserErrors.EmailInUse(request.Email!);
@@ -139,7 +139,7 @@ public class AuthService(IUserRepository userRepo,
             email: request.Email!,
             phoneNumber: request.PhoneNumber,
             passwordHash: request.Password!, // TODO: add password hashing
-            role: UserRole.Vendor
+            role: role
         );
 
         return userResult.IsFailure ? userResult.Errors : userResult.Value!;

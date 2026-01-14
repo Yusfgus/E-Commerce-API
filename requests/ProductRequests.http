@@ -2,23 +2,26 @@
 
 @ProductId = 6532b0b7-e5b1-4edc-98f7-e9536b36571f
 
+@GusAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjBhMDU3YmE4LWE5YmQtNDFkMy1hNmRmLTllMTM3YWYxNTVjNiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InlvdXNlZmd1czExMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDdXN0b21lciIsImV4cCI6MTc2ODYwNTc5MSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.6KqW-suNFk9f7U2X-5zUP1NSy6xPUFDOB2lv6Ka2L_w
+@GusRefreshToken = rpqLauLtjsYsL5dLu/Nu4cKlfdr7YLqI6+BRN2VYofo=
+
 @AwadAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImFkNDcyMDQ4LWU4MmQtNDdlYS1hMWNlLWU5NWYwMDU2ZDA4MyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6Im1hd2FkQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlZlbmRvciIsImV4cCI6MTc2ODYwNTgyMSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.DjtKcC2DLUR8v35KoRYBrfrpJoWQXDsuukyMoPsAV9w
 @AwadRefreshToken = Z7ggXPsC5cULyzj1mW8yAJUsuSs1jXPyIr7Q3PMhdQ0=
 
 
 ###
 GET {{BaseUrl}}?page=1&pageSize=5
-Authorization: Bearer {{AwadAccessToken}}
+Authorization: Bearer {{GusAccessToken}}
 
 
 ###
 GET {{BaseUrl}}/{{ProductId}}
-Authorization: Bearer {{AwadAccessToken}}
+Authorization: Bearer {{GusAccessToken}}
 
 
 ###
 GET {{BaseUrl}}/Laptop
-Authorization: Bearer {{AwadAccessToken}}
+Authorization: Bearer {{GusAccessToken}}
 
 
 ###
@@ -32,11 +35,11 @@ Authorization: Bearer {{AwadAccessToken}}
 Content-Type: application/json
 
 {
-    "Name": "HTML & CSS",
-    "Description": "Learning HTML and CSS for beginner",
-    "Price": 100,
-    "StockQuantity": 40,
-    "Category": "Books"
+    "Name": "Skrew",
+    "Description": "Skrew card game",
+    "Price": 250,
+    "StockQuantity": 1000,
+    "Category": "Toys & Games"
 }
 
 

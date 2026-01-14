@@ -12,12 +12,22 @@ public static class CategoryErrors
             code: "CATEGORY_NAME_TOO_LONG",
             description: "Category name exceeds maximum length");
 
+    public static Error NameTooShort =>
+        Error.Validation(
+            code: "Category.NameTooShort", 
+            description: "Category name must be at least 3 characters.");
+
     public static Error NameInvalid =>
         Error.Validation(
             code: "CATEGORY_NAME_INVALID",
             description: "Category name contains invalid characters");
             
 // ---------
+
+    public static Error NotFound(Guid id) =>
+        Error.NotFound(
+            code: "CATEGORY_NOT_FOUND",
+            description: $"Category with id '{id}' does not exist");
 
     public static Error NotFound(string category) =>
         Error.NotFound(
