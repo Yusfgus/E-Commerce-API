@@ -144,7 +144,7 @@ public class AuthService(IUserRepository userRepo,
         return tokeDtoResult.Value!;
     }
 
-    public Task<Result<Success>> LogOutAsync(CancellationToken ct)
+    public Task<Result> LogOutAsync(CancellationToken ct)
     {
         throw new NotImplementedException();
     }

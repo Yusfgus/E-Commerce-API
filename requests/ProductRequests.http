@@ -2,19 +2,20 @@
 
 @ProductId = 1155B2C6-CBE9-4E11-A621-97A3295E65FB
 
-
-###
-GET {{BaseUrl}}/products/{{ProductId}}
-
-###
-
-
-###
-GET {{BaseUrl}}/products/Laptop
+@AwadAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImFkNDcyMDQ4LWU4MmQtNDdlYS1hMWNlLWU5NWYwMDU2ZDA4MyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6Im1hd2FkQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlZlbmRvciIsImV4cCI6MTc2ODYwNTgyMSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.DjtKcC2DLUR8v35KoRYBrfrpJoWQXDsuukyMoPsAV9w
+@AwadRefreshToken = Z7ggXPsC5cULyzj1mW8yAJUsuSs1jXPyIr7Q3PMhdQ0=
 
 
 ###
 GET {{BaseUrl}}/products?page=1&pageSize=2
+
+
+###
+GET {{BaseUrl}}/products/{{ProductId}}
+
+
+###
+GET {{BaseUrl}}/products/Laptop
 
 
 ###
@@ -23,6 +24,7 @@ DELETE {{BaseUrl}}/products/d2eb003f-370f-46cb-9bcc-74a3062e01d0
 
 ###
 POST {{BaseUrl}}/products
+Authorization: Bearer {{AwadAccessToken}}
 Content-Type: application/json
 
 {

@@ -63,7 +63,7 @@ public sealed class Product : AuditableEntity
         return product;
     }
 
-    public Result<Updated> UpdateName(string name)
+    public Result UpdateName(string name)
     {
         List<Error> errors = [];
 
@@ -78,40 +78,40 @@ public sealed class Product : AuditableEntity
 
         Name = name.Trim();
 
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public Result<Updated> UpdateDescription(string description)
+    public Result UpdateDescription(string description)
     {
         if (string.IsNullOrWhiteSpace(description))
             return ProductErrors.DescriptionRequired;
 
         Description = description.Trim();
 
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public Result<Updated> UpdatePrice(decimal price)
+    public Result UpdatePrice(decimal price)
     {
         if (price <= 0)
             return ProductErrors.InvalidPrice;
 
         Price = price;
 
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public Result<Updated> UpdateStockQuantity(int stockQuantity)
+    public Result UpdateStockQuantity(int stockQuantity)
     {
         if (stockQuantity < 0)
             return ProductErrors.InvalidStockQuantity;
 
         StockQuantity = stockQuantity;
 
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public Result<Updated> ChangeCategory(Category category)
+    public Result ChangeCategory(Category category)
     {
         if (category is null)
             return ProductErrors.CategoryIdRequired;
@@ -119,7 +119,7 @@ public sealed class Product : AuditableEntity
         Category = category;
         CategoryId = category.Id;
 
-        return Result.Updated;
+        return Result.Success;
     }
 }
 

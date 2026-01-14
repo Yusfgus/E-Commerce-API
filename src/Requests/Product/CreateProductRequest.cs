@@ -2,7 +2,6 @@ namespace E_Commerce.Requests.Product;
 
 public class CreateProductRequest
 {
-    public Guid VendorId { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
     public decimal Price { get; set; }

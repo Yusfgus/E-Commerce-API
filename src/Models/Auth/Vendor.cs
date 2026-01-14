@@ -43,7 +43,7 @@ public sealed class Vendor
         return vendor;
     }
 
-    public Result<Updated> UpdateStoreName(string? storeName)
+    public Result UpdateStoreName(string? storeName)
     {
         if (string.IsNullOrWhiteSpace(storeName))
             return VendorErrors.StoreNameRequired;
@@ -53,7 +53,7 @@ public sealed class Vendor
 
         StoreName = storeName.Trim();
 
-        return Result.Updated;
+        return Result.Success;
     }
 
 }

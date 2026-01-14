@@ -5,5 +5,5 @@ namespace E_Commerce.Services.Abstractions;
 
 public interface ICartService
 {
-    Task<Result<Created>> AddCartItem(CreateCartItemRequest request, CancellationToken ct);
+    Task<Result> AddCartItem(CreateCartItemRequest request, CancellationToken ct);
 }

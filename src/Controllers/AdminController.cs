@@ -1,10 +1,13 @@
+using E_Commerce.Models.Auth;
 using E_Commerce.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce.Controllers;
 
 [ApiController]
 [Route("api/admin")]
+// [Authorize(Roles = nameof(UserRole.Admin))]
 public class AdminController(IAdminService adminService) : ApiController
 {
     
@@ -37,8 +40,8 @@ public class AdminController(IAdminService adminService) : ApiController
     {
         var result = await adminService.DeleteUserAsync(id, ct);
         
-        return result.Match<IActionResult>(
-            onSuccess: _ => NoContent(),
+        return result.Match(
+            onSuccess: NoContent,
             onFailure: Problem
         );
     }
@@ -49,8 +52,8 @@ public class AdminController(IAdminService adminService) : ApiController
     {
         var result = await adminService.ActivateUserAsync(id, ct);
         
-        return result.Match<IActionResult>(
-            onSuccess: _ => NoContent(),
+        return result.Match(
+            onSuccess: NoContent,
             onFailure: Problem
         );
     }
@@ -61,8 +64,8 @@ public class AdminController(IAdminService adminService) : ApiController
     {
         var result = await adminService.DeactivateUserAsync(id, ct);
         
-        return result.Match<IActionResult>(
-            onSuccess: _ => NoContent(),
+        return result.Match(
+            onSuccess: NoContent,
             onFailure: Problem
         );
     }

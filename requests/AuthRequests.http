@@ -1,8 +1,10 @@
 @BaseUrl = https://localhost:7262/api/auth
 
-@AccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwYTA1N2JhOC1hOWJkLTQxZDMtYTZkZi05ZTEzN2FmMTU1YzYiLCJlbWFpbCI6InlvdXNlZmd1czExMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDdXN0b21lciIsImV4cCI6MTc2ODE4NjQxMSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.DVHNjIQnKvjoCKKaCnoQ5Zaj-fHo5fDXNtQBjpz9Lik
-@RefreshToken = fX08G5gQN/sokOTcWe35f1xDkcHo60Y+KqIteet8jjU=
+@GusAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjBhMDU3YmE4LWE5YmQtNDFkMy1hNmRmLTllMTM3YWYxNTVjNiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InlvdXNlZmd1czExMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDdXN0b21lciIsImV4cCI6MTc2ODYwNTc5MSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.6KqW-suNFk9f7U2X-5zUP1NSy6xPUFDOB2lv6Ka2L_w
+@GusRefreshToken = rpqLauLtjsYsL5dLu/Nu4cKlfdr7YLqI6+BRN2VYofo=
 
+@AwadAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImFkNDcyMDQ4LWU4MmQtNDdlYS1hMWNlLWU5NWYwMDU2ZDA4MyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6Im1hd2FkQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlZlbmRvciIsImV4cCI6MTc2ODYwNTgyMSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.DjtKcC2DLUR8v35KoRYBrfrpJoWQXDsuukyMoPsAV9w
+@AwadRefreshToken = Z7ggXPsC5cULyzj1mW8yAJUsuSs1jXPyIr7Q3PMhdQ0=
 
 ###
 POST {{BaseUrl}}/login/
@@ -11,6 +13,16 @@ Content-Type: application/json
 {
     "Email": "yousefgus111@gmail.com",
     "Password": "gus123"
+}
+
+
+###
+POST {{BaseUrl}}/login/
+Content-Type: application/json
+
+{
+    "Email": "mawad@gmail.com",
+    "Password": "awad123"
 }
 
 
@@ -40,7 +52,7 @@ Content-Type: application/json
 
 ###
 GET  {{BaseUrl}}/private-data
-Authorization: Bearer {{AccessToken}}
+Authorization: Bearer {{AwadAccessToken}}
 
 
 ###
@@ -48,5 +60,5 @@ POST {{BaseUrl}}/refresh
 Content-Type: application/json
 
 {
-    "RefreshToken": "{{RefreshToken}}"
+    "RefreshToken": "{{GusRefreshToken}}"
 }

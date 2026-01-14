@@ -32,7 +32,7 @@ public class AdminService(IUserRepository userRepo, IUnitOfWork uow) : IAdminSer
                 : user.ToDto();
     }
 
-    public async Task<Result<Deleted>> DeleteUserAsync(Guid id, CancellationToken ct)
+    public async Task<Result> DeleteUserAsync(Guid id, CancellationToken ct)
     {
         User? user = await userRepo.GetByIdAsync(id, ct);
 
@@ -43,10 +43,10 @@ public class AdminService(IUserRepository userRepo, IUnitOfWork uow) : IAdminSer
 
         await uow.SaveChangesAsync(ct);
 
-        return Result.Deleted;
+        return Result.Success;
     }
     
-    public async Task<Result<Updated>> DeactivateUserAsync(Guid id, CancellationToken ct)
+    public async Task<Result> DeactivateUserAsync(Guid id, CancellationToken ct)
     {
         User? user = await userRepo.GetByIdAsTrackingAsync(id, ct);
 
@@ -62,10 +62,10 @@ public class AdminService(IUserRepository userRepo, IUnitOfWork uow) : IAdminSer
 
         await uow.SaveChangesAsync(ct);
 
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public async Task<Result<Updated>> ActivateUserAsync(Guid id, CancellationToken ct)
+    public async Task<Result> ActivateUserAsync(Guid id, CancellationToken ct)
     {
         User? user = await userRepo.GetByIdAsync(id, ct);
 
@@ -76,7 +76,7 @@ public class AdminService(IUserRepository userRepo, IUnitOfWork uow) : IAdminSer
 
         await uow.SaveChangesAsync(ct);
 
-        return Result.Updated;
+        return Result.Success;
     }
 
 }

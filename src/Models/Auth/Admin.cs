@@ -36,12 +36,12 @@ public sealed class Admin
         return admin;
     }
 
-    public Result<Updated> UpdateLastAction(DateTimeOffset actionAtUtc)
+    public Result UpdateLastAction(DateTimeOffset actionAtUtc)
     {
         if (actionAtUtc > DateTimeOffset.UtcNow)
             return AdminErrors.LastActionInFuture;
 
         LastActionAtUtc = actionAtUtc;
-        return Result.Updated;
+        return Result.Success;
     }
 }

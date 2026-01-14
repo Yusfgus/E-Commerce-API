@@ -58,4 +58,10 @@ public static class ProductErrors
         Error.Conflict(
             code: "PRODUCT_NAME_TAKEN",
             description: $"Product name '{name}' is already in use");
+
+    public static Error ProductAccessDenied =>
+        Error.Forbidden(
+            code: "PRODUCT_ACCESS_DENIED",
+            description: "You are not allowed to modify this product");
+
 }

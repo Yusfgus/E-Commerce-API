@@ -7,7 +7,7 @@ public interface IAdminService
 {
     Task<Result<PaginatedDto<UserDto>>> GetUsersAsync(int page, int pageSize, CancellationToken ct);
     Task<Result<UserDto>> GetUserByIdAsync(Guid id, CancellationToken ct);
-    Task<Result<Updated>> DeactivateUserAsync(Guid id, CancellationToken ct);
-    Task<Result<Updated>> ActivateUserAsync(Guid id, CancellationToken ct);
-    Task<Result<Deleted>> DeleteUserAsync(Guid id, CancellationToken ct);
+    Task<Result> DeactivateUserAsync(Guid id, CancellationToken ct);
+    Task<Result> ActivateUserAsync(Guid id, CancellationToken ct);
+    Task<Result> DeleteUserAsync(Guid id, CancellationToken ct);
 }

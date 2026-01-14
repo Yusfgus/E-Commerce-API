@@ -3,13 +3,19 @@ using E_Commerce.Dtos;
 using E_Commerce.Results;
 using E_Commerce.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using E_Commerce.Models.Auth;
+using System.Security.Claims;
 
 namespace E_Commerce.Controllers;
 
 [ApiController]
 [Route("api/products")]
+[Authorize]
 public class ProductController(IProductService productService) : ApiController
 {
+    // -------------------- PUBLIC --------------------
+
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, CancellationToken ct = default)
     {
@@ -45,13 +51,17 @@ public class ProductController(IProductService productService) : ApiController
         );
     }
 
+    // -------------------- VENDOR --------------------
 
     [HttpPost]
+    [Authorize(Roles = nameof(UserRole.Vendor))]
     public async Task<IActionResult> Create([FromBody] CreateProductRequest request, CancellationToken ct = default)
     {
-        Result<ProductDto> result = await productService.CreateAsync(request, ct);
+        Guid vendorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        return result.Match<IActionResult>(
+        Result<ProductDto> result = await productService.CreateAsync(request, vendorId, ct);
+
+        return result.Match(
             onSuccess: product => CreatedAtAction(nameof(GetById), new { id = product.Id }, product),
             onFailure: Problem
         );
@@ -59,24 +69,28 @@ public class ProductController(IProductService productService) : ApiController
 
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = nameof(UserRole.Vendor))]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductRequest request, CancellationToken ct = default)
     {
-        var result = await productService.UpdateAsync(id, request, ct);
+        Guid vendorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        return result.Match<IActionResult>(
-            onSuccess: _ => NoContent(),
+        var result = await productService.UpdateAsync(id, vendorId, request, ct);
+
+        return result.Match(
+            onSuccess: NoContent,
             onFailure: Problem
         );
     }
 
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = nameof(UserRole.Vendor))]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct = default)
     {
         var result = await productService.DeleteAsync(id, ct);
 
-        return result.Match<IActionResult>(
-            onSuccess: _ => NoContent(),
+        return result.Match(
+            onSuccess: NoContent,
             onFailure: Problem
         );
     }

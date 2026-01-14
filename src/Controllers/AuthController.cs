@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using E_Commerce.Request.Auth;
 using E_Commerce.Requests.Auth;
 using E_Commerce.Services.Abstractions;
@@ -11,6 +12,7 @@ namespace E_Commerce.Controllers;
 public class AuthController(IAuthService authService) : ApiController
 {
     [HttpPost("register/customer")]
+    [AllowAnonymous]
     public async Task<IActionResult> RegisterCustomer([FromBody] RegisterCustomerRequest request, CancellationToken ct = default)
     {
         var result = await authService.RegisterCustomerAsync(request, ct);
@@ -22,6 +24,7 @@ public class AuthController(IAuthService authService) : ApiController
     }
 
     [HttpPost("register/vendor")]
+    [AllowAnonymous]
     public async Task<IActionResult> RegisterVendor([FromBody] RegisterVendorRequest request, CancellationToken ct = default)
     {
         var result = await authService.RegisterVendorAsync(request, ct);
@@ -33,6 +36,7 @@ public class AuthController(IAuthService authService) : ApiController
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> LogIn([FromBody] LogInUserRequest request, CancellationToken ct = default)
     {
         var result = await authService.LogInAsync(request, ct);
@@ -44,12 +48,15 @@ public class AuthController(IAuthService authService) : ApiController
     }
 
     [HttpPost("logout")]
+    [Authorize]
     public IActionResult LogOut(CancellationToken ct = default)
     {
+        // revoke refresh token
         return Ok("logOut");
     }
 
     [HttpPost("refresh")]
+    [AllowAnonymous]
     public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request, CancellationToken ct = default)
     {
         var result = await authService.Refresh(request, ct);
@@ -64,7 +71,12 @@ public class AuthController(IAuthService authService) : ApiController
     [Authorize]
     public IActionResult GetPrivateData(CancellationToken ct = default)
     {
-        return Ok("You are authenticated");
+        return Ok(new
+        {
+            Id = User.FindFirstValue(ClaimTypes.NameIdentifier),
+            Email = User.FindFirstValue(ClaimTypes.Email),
+            Role = User.FindFirstValue(ClaimTypes.Role)
+        });
     }
 
 }

@@ -21,8 +21,8 @@ public class JwtTokenProvider(IRefreshTokenRepository refreshTokenRepo,
         // create claims
         var claims = new List<Claim>
         {
-            new (JwtRegisteredClaimNames.Sub, request.UserId.ToString()),
-            new (JwtRegisteredClaimNames.Email, request.Email),
+            new (ClaimTypes.NameIdentifier, request.UserId.ToString()),
+            new (ClaimTypes.Email, request.Email),
             new (ClaimTypes.Role, request.Role.ToString()),
         };
 

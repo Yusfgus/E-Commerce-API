@@ -23,4 +23,14 @@ public static class CategoryErrors
         Error.NotFound(
             code: "CATEGORY_NOT_FOUND",
             description: $"Category '{category}' does not exist");
+
+    public static Error NameTaken =>
+        Error.Conflict(
+            code: "CATEGORY_NAME_TAKEN",
+            description: "Category name already exists");
+
+    public static Error HasProducts =>
+        Error.Conflict(
+            code: "CATEGORY_HAS_PRODUCTS",
+            description: "Cannot delete category with existing products");
 }

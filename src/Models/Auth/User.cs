@@ -71,7 +71,7 @@ public sealed class User : AuditableEntity
         return true;
     }
 
-    public Result<Updated> UpdateEmail(string email)
+    public Result UpdateEmail(string email)
     {
         List<Error> errors = [];
 
@@ -85,26 +85,26 @@ public sealed class User : AuditableEntity
             return errors;
 
         Email = email.Trim().ToLowerInvariant();
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public Result<Updated> UpdatePhoneNumber(string phoneNumber)
+    public Result UpdatePhoneNumber(string phoneNumber)
     {
         if (!string.IsNullOrWhiteSpace(phoneNumber) || !Regex.IsMatch(phoneNumber, @"^\+?\d{7,15}$"))
         {
             return UserErrors.PhoneNumberInvalid;
         }
 
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public Result<Updated> ChangePassword(string passwordHash)
+    public Result ChangePassword(string passwordHash)
     {
         if (string.IsNullOrWhiteSpace(passwordHash))
             return UserErrors.PasswordHashRequired;
 
         PasswordHash = passwordHash;
-        return Result.Updated;
+        return Result.Success;
     }
 
     public void UpdateLastLogin()
@@ -112,13 +112,13 @@ public sealed class User : AuditableEntity
         LastLoginAtUtc = DateTimeOffset.UtcNow;
     }
 
-    public Result<Updated> Deactivate()
+    public Result Deactivate()
     {
         if (!IsActive)
             return UserErrors.UserInactive;
 
         IsActive = false;
-        return Result.Updated;
+        return Result.Success;
     }
 
     public void Activate()

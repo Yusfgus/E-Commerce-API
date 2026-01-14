@@ -47,10 +47,10 @@ public class ProductService(IProductRepository productRepo,
         return product.ToDto();
     }
 
-    public async Task<Result<ProductDto>> CreateAsync(CreateProductRequest request, CancellationToken ct)
+    public async Task<Result<ProductDto>> CreateAsync(CreateProductRequest request, Guid vendorId, CancellationToken ct)
     {
-        if (!await userRepo.IsExist(request.VendorId, ct))
-            return ProductErrors.VendorNotFound(request.VendorId);
+        if (!await userRepo.IsExist(vendorId, ct))
+            return ProductErrors.VendorNotFound(vendorId);
 
         if (await productRepo.IsExistAsync(request.Name!, ct))
             return ProductErrors.NameInUse(request.Name!);
@@ -62,7 +62,7 @@ public class ProductService(IProductRepository productRepo,
 
         var productResult = Product.Create
         (
-            vendorId: request.VendorId,
+            vendorId: vendorId,
             name: request.Name!,
             description: request.Description!,
             price: request.Price,
@@ -87,12 +87,17 @@ public class ProductService(IProductRepository productRepo,
         return product.ToDto();
     }
 
-    public async Task<Result<Updated>> UpdateAsync(Guid id, UpdateProductRequest request, CancellationToken ct)
+    public async Task<Result> UpdateAsync(Guid id, Guid currentVendorId, UpdateProductRequest request, CancellationToken ct)
     {
         var product = await productRepo.GetByIdAsTrackingAsync(id, ct);
 
         if (product is null)
             return ProductErrors.NotFound(id);
+
+        if (product.VendorId != currentVendorId)
+            return ProductErrors.ProductAccessDenied;
+
+        List<List<Error>> errors = [];
 
         if (request.Category is not null)
         {
@@ -103,43 +108,48 @@ public class ProductService(IProductRepository productRepo,
 
             var result = product.ChangeCategory(category);
             if (result.IsFailure)
-                return result.Errors;
+                errors.Add(result.Errors);
         }
 
         if (request.Name is not null)
         {
             var result = product.UpdateName(request.Name);
             if (result.IsFailure)
-                return result.Errors;
+                errors.Add(result.Errors);
         }
 
         if (request.Description is not null)
         {
             var result = product.UpdateDescription(request.Description);
             if (result.IsFailure)
-                return result.Errors;
+                errors.Add(result.Errors);
         }
 
         if (request.Price is not null)
         {
             var result = product.UpdatePrice(request.Price.Value);
             if (result.IsFailure)
-                return result.Errors;
+                errors.Add(result.Errors);
         }
 
         if (request.StockQuantity is not null)
         {
             var result = product.UpdateStockQuantity(request.StockQuantity.Value);
             if (result.IsFailure)
-                return result.Errors;
+                errors.Add(result.Errors);
+        }
+
+        if (errors.Count != 0)
+        {
+            return errors.SelectMany(e => e).ToList();
         }
 
         await uow.SaveChangesAsync(ct);
         
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public async Task<Result<Deleted>> DeleteAsync(Guid id, CancellationToken ct)
+    public async Task<Result> DeleteAsync(Guid id, CancellationToken ct)
     {
         Product? product = await productRepo.GetByIdAsync(id, ct);
 
@@ -150,7 +160,7 @@ public class ProductService(IProductRepository productRepo,
 
         await uow.SaveChangesAsync(ct);
 
-        return Result.Deleted;
+        return Result.Success;
     }
 
 }

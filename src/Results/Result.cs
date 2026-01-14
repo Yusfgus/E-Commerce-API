@@ -1,43 +1,56 @@
 namespace E_Commerce.Results;
 
-public readonly record struct Success;
-public readonly record struct Created;
-public readonly record struct Deleted;
-public readonly record struct Updated;
-
-public static class Result
-{
-    public static Success Success => default;
-    public static Created Created => default;
-    public static Deleted Deleted => default;
-    public static Updated Updated => default;
-}
-
-public sealed class Result<T>
+public class Result
 {
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
     public List<Error> Errors { get; }
-    public Error? TopError => Errors.Count > 0 ? Errors[0] : null;
-    public T? Value { get; }
 
-
-    private Result(T value)
+    protected Result()
     {
-        Value = value ?? throw new ArgumentNullException(nameof(value));
         IsSuccess = true;
         Errors = [];
     }
 
-    private Result(List<Error> errors)
+    protected Result(List<Error> errors)
     {
         Errors = errors ?? throw new ArgumentNullException(nameof(errors));
         IsSuccess = false;
+    }
+
+    public TResult Match<TResult>(Func<TResult> onSuccess, Func<List<Error>, TResult> onFailure)
+    {
+        if (IsSuccess)
+            return onSuccess();
+
+        return onFailure(Errors);
+    }
+
+    public static Result Success => new();
+
+    public static implicit operator Result(Error error)
+        => new([error]);
+
+    public static implicit operator Result(List<Error> errors)
+        => new(errors);
+    
+}
+
+public sealed class Result<T> : Result
+{
+    public T? Value { get; }
+
+    private Result(T value) : base()
+    {
+        Value = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
+    private Result(List<Error> errors) : base(errors)
+    {
         Value = default;
     }
 
-    public TResult Match<TResult>(Func<T, TResult> onSuccess,
-                                  Func<List<Error>, TResult> onFailure)
+    public TResult Match<TResult>(Func<T, TResult> onSuccess, Func<List<Error>, TResult> onFailure)
     {
         if (IsSuccess)
             return onSuccess(Value!);

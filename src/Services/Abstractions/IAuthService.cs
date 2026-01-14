@@ -10,6 +10,6 @@ public interface IAuthService
     Task<Result<UserDto>> RegisterCustomerAsync(RegisterCustomerRequest request, CancellationToken ct);
     Task<Result<UserDto>> RegisterVendorAsync(RegisterVendorRequest request, CancellationToken ct);
     Task<Result<TokenDto>> LogInAsync(LogInUserRequest request, CancellationToken ct);
-    Task<Result<Success>> LogOutAsync(CancellationToken ct);
+    Task<Result> LogOutAsync(CancellationToken ct);
     Task<Result<TokenDto>> Refresh(RefreshTokenRequest request, CancellationToken ct);
 }

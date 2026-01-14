@@ -7,9 +7,6 @@ public class CreateProductRequestValidator : AbstractValidator<CreateProductRequ
 {
     public CreateProductRequestValidator()
     {
-        RuleFor(x => x.VendorId)
-            .NotEmpty().WithMessage("Vendor id is requireddddddd");
-
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Product Name is required")
             .Length(3, 255).WithMessage("Product Name must be between 3 and 255 characters");

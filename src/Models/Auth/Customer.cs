@@ -58,33 +58,33 @@ public sealed class Customer
         return customer;
     }
 
-    public Result<Updated> UpdateFirstName(string firstName)
+    public Result UpdateFirstName(string firstName)
     {
         if (string.IsNullOrWhiteSpace(firstName))
             return CustomerErrors.FirstNameRequired;
 
         FirstName = firstName.Trim();
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public Result<Updated> UpdateLastName(string lastName)
+    public Result UpdateLastName(string lastName)
     {
         if (string.IsNullOrWhiteSpace(lastName))
             return CustomerErrors.LastNameRequired;
 
         LastName = lastName.Trim();
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public Result<Updated> UpdateShippingAddress(string? shippingAddress)
+    public Result UpdateShippingAddress(string? shippingAddress)
     {
         ShippingAddress = shippingAddress?.Trim();
-        return Result.Updated;
+        return Result.Success;
     }
 
-    public Result<Updated> UpdateBillingAddress(string? billingAddress)
+    public Result UpdateBillingAddress(string? billingAddress)
     {
         BillingAddress = billingAddress?.Trim();
-        return Result.Updated;
+        return Result.Success;
     }
 }
