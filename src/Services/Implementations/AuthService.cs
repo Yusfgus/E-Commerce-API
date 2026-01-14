@@ -14,6 +14,7 @@ namespace E_Commerce.Services.Implementations;
 public class AuthService(IUserRepository userRepo,
                          ICustomerRepository customerRepo,
                          IVendorRepository vendorRepo,
+                         IAdminRepository adminRepo,
                          JwtTokenProvider tokenProvider,
                          IUnitOfWork uow) 
     : IAuthService
@@ -89,6 +90,40 @@ public class AuthService(IUserRepository userRepo,
         await uow.SaveChangesAsync(ct);
 
         return vendor.ToDto();
+    }
+    
+    public async Task<Result<UserDto>> RegisterAdminAsync(RegisterAdminRequest request, CancellationToken ct)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var userResult = await RegisterUserAsync(request, ct);
+
+        if (userResult.IsFailure)
+        {
+            return userResult.Errors;
+        }
+
+        User user = userResult.Value!;
+
+        await userRepo.AddAsync(user, ct);
+
+        var adminResult = Admin.Create
+        (
+            userId: user.Id
+        );
+
+        if (adminResult.IsFailure)
+        {
+            return adminResult.Errors;
+        }
+
+        Admin admin = adminResult.Value!;
+
+        await adminRepo.AddAsync(admin, ct);
+
+        await uow.SaveChangesAsync(ct);
+
+        return admin.ToDto();
     }
 
     private async Task<Result<User>> RegisterUserAsync(RegisterUserRequest request, CancellationToken ct)

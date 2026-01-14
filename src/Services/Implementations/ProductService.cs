@@ -82,7 +82,7 @@ public class ProductService(IProductRepository productRepo,
 
         await uow.SaveChangesAsync(ct);
 
-        // product.Category = category; // for response
+        product.Category = category; // for response
 
         return product.ToDto();
     }

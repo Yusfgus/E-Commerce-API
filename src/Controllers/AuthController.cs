@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using E_Commerce.Models.Auth;
 using E_Commerce.Request.Auth;
 using E_Commerce.Requests.Auth;
 using E_Commerce.Services.Abstractions;
@@ -28,6 +29,18 @@ public class AuthController(IAuthService authService) : ApiController
     public async Task<IActionResult> RegisterVendor([FromBody] RegisterVendorRequest request, CancellationToken ct = default)
     {
         var result = await authService.RegisterVendorAsync(request, ct);
+
+        return result.Match(
+            onSuccess: user => Ok(user),
+            onFailure: Problem
+        );
+    }
+
+    [HttpPost("register/admin")]
+    [Authorize(Roles = nameof(UserRole.Admin))]
+    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminRequest request, CancellationToken ct = default)
+    {
+        var result = await authService.RegisterAdminAsync(request, ct);
 
         return result.Match(
             onSuccess: user => Ok(user),

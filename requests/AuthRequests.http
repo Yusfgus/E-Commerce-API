@@ -6,23 +6,25 @@
 @AwadAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImFkNDcyMDQ4LWU4MmQtNDdlYS1hMWNlLWU5NWYwMDU2ZDA4MyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6Im1hd2FkQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlZlbmRvciIsImV4cCI6MTc2ODYwNTgyMSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.DjtKcC2DLUR8v35KoRYBrfrpJoWQXDsuukyMoPsAV9w
 @AwadRefreshToken = Z7ggXPsC5cULyzj1mW8yAJUsuSs1jXPyIr7Q3PMhdQ0=
 
-###
-POST {{BaseUrl}}/login/
-Content-Type: application/json
-
-{
-    "Email": "yousefgus111@gmail.com",
-    "Password": "gus123"
-}
+@AdminAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjhiYzVlMTQ4LTYxN2EtNDhhYi1hNmVjLTNhOTJmZjU4Yzk0ZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJWZW5kb3IiLCJleHAiOjE3Njg2NTMyMzcsImlzcyI6ImxvY2FsaG9zdCIsImF1ZCI6ImxvY2FsaG9zdCJ9.Eu94giPEgxTxQ5OJd5n76w2f7AnGaOnZG463qPTkSIA
+@AdminRefreshToken = ha0J2AqnP/CJJbm8kOJKe77OJZjCJ96vcRI37Ze8UvA=
 
 
 ###
 POST {{BaseUrl}}/login/
 Content-Type: application/json
 
+# {
+#     "Email": "yousefgus111@gmail.com",
+#     "Password": "gus123"
+# }
+# {
+#     "Email": "mawad@gmail.com",
+#     "Password": "awad123"
+# }
 {
-    "Email": "mawad@gmail.com",
-    "Password": "awad123"
+    "Email": "admin1@gmail.com",
+    "Password": "admin"
 }
 
 
@@ -35,7 +37,7 @@ Content-Type: application/json
     "LastName": "Mohamed",
     "Email": "yousefgus111@gmail.com",
     "Password": "gus123",
-    "PhoneNumber": "+20 01158689513"
+    "PhoneNumber": "+2001158689513"
 }
 
 
@@ -45,8 +47,20 @@ Content-Type: application/json
 
 {
     "Email": "mostafagmail.com",
-    "PhoneNumber": "+20 01095008854",
+    "PhoneNumber": "+2001095008854",
     "StoreName": "El-Fat7 Store"
+}
+
+
+###
+POST {{BaseUrl}}/register/admin
+Authorization: Bearer {{AdminAccessToken}}
+Content-Type: application/json
+
+{
+    "Email": "admin1@gmail.com",
+    "Password": "admin",
+    "PhoneNumber": "+2001158689555"
 }
 
 

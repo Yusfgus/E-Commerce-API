@@ -21,9 +21,5 @@ public class CreateProductRequestValidator : AbstractValidator<CreateProductRequ
         RuleFor(x => x.StockQuantity)
             .NotEmpty().WithMessage("Product Stock Quantity is required")
             .GreaterThanOrEqualTo(0).WithMessage("Stock Quantity can't be negative");
-    
-        RuleFor(x => x.Category)
-            .NotNull().WithMessage("Product Category is required")
-            .IsInEnum().WithMessage("Invalid product category");
     }    
 }

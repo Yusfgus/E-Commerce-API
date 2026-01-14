@@ -16,7 +16,7 @@ public sealed class Product : AuditableEntity
 
     // Navigation
     public Vendor Vendor { get; private set; } = null!;
-    public Category Category { get; private set; } = null!;
+    public Category Category { get; set; } = null!;
 
     private Product() { } // EF Core
 

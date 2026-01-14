@@ -41,7 +41,11 @@ public sealed class User : AuditableEntity
         if (string.IsNullOrWhiteSpace(passwordHash))
             errors.Add(UserErrors.PasswordHashRequired);
 
-        if (!string.IsNullOrWhiteSpace(phoneNumber) && !Regex.IsMatch(phoneNumber, @"^\+[1-9]\d{7,14}$"))
+        if (string.IsNullOrWhiteSpace(phoneNumber))
+        {
+            
+        }
+        else if(!Regex.IsMatch(phoneNumber, @"^\+[1-9]\d{7,14}$"))
             errors.Add(UserErrors.PhoneNumberInvalid);
 
         if (errors.Count != 0)
