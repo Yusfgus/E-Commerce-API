@@ -70,6 +70,9 @@ public class CategoryService(ICategoryRepository categoryRepo, IUnitOfWork uow) 
 
         if (request.Name is not null)
         {
+            if(await categoryRepo.IsExit(request.Name, ct))
+                return CategoryErrors.NameTaken;
+
             var result = category.UpdateName(request.Name);
             if (result.IsFailure)
                 errors.Add(result.Errors);

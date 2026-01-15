@@ -14,7 +14,7 @@ public static class CartItemMapper
             CartId = cartItem.CartId,
             ProductId = cartItem.ProductId,
             Quantity = cartItem.Quantity,
-            Product = cartItem.Product.ToDto()
+            // Product = cartItem.Product.ToDto()
         };
     }
 
