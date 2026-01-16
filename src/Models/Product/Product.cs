@@ -111,6 +111,19 @@ public sealed class Product : AuditableEntity
         return Result.Success;
     }
 
+    public Result WithdrawProduct(int quantity)
+    {
+        if (quantity < 0)
+            return ProductErrors.InvalidWithdrawQuantity;
+            
+        if (quantity > StockQuantity)
+            return ProductErrors.InsufficientStock;
+
+        StockQuantity -= quantity;
+
+        return Result.Success;
+    }
+
     public Result ChangeCategory(Category category)
     {
         if (category is null)

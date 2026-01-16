@@ -64,4 +64,14 @@ public static class ProductErrors
             code: "PRODUCT_ACCESS_DENIED",
             description: "You are not allowed to modify this product");
 
+    public static Error InsufficientStock =>
+        Error.Conflict(
+            code: "PRODUCT_INSUFFICIENT_STOCK",
+            description: "Not enough stock available for this product");
+
+    public static Error InvalidWithdrawQuantity =>
+        Error.Validation(
+            code: "PRODUCT_INVALID_WITHDRAW_QUANTITY",
+            description: "Withdraw quantity must be greater than zero");
+
 }

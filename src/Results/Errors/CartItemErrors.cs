@@ -21,5 +21,13 @@ public static class CartItemErrors
         Error.Conflict(
             code: "CART_ITEM_QUANTITY_BELOW_ONE",
             description: "Cart item quantity cannot be less than one");
+
+// -----
+
+    public static Error NotFound(Guid id) =>
+        Error.Conflict(
+            code: "CART_ITEM_NOT_FOUND",
+            description: $"Cart item with id '{id}' not found");
+
 }
 

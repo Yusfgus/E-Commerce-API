@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace E_Commerce.Data.Configurations;
 
-public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
+public class CartItemConfiguration : AuditableEntityConfiguration<CartItem>
 {
-    public void Configure(EntityTypeBuilder<CartItem> builder)
+    public override void Configure(EntityTypeBuilder<CartItem> builder)
     {
         builder.ToTable("CartItems");
 
-        builder.HasKey(x => new { x.CartId, x.ProductId });
+        builder.HasIndex(x => new { x.CartId, x.ProductId })
+            .IsUnique(true);
 
         builder.Property(x => x.Quantity)
             .IsRequired();

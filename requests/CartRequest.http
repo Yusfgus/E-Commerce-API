@@ -1,12 +1,13 @@
 @BaseUrl = https://localhost:7262/api/cart
 
-@GusAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjBhMDU3YmE4LWE5YmQtNDFkMy1hNmRmLTllMTM3YWYxNTVjNiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InlvdXNlZmd1czExMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDdXN0b21lciIsImV4cCI6MTc2ODYwNTc5MSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.6KqW-suNFk9f7U2X-5zUP1NSy6xPUFDOB2lv6Ka2L_w
-@GusRefreshToken = rpqLauLtjsYsL5dLu/Nu4cKlfdr7YLqI6+BRN2VYofo=
+@GusAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE2NjJhZDMxLWE5Y2UtNDdlYi1hMzlhLTVlM2Q3Y2UxMDAxMSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InlvdXNlZmd1czExMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDdXN0b21lciIsImV4cCI6MTc2ODc4NDUwMSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.dQ1AY6ujm_fhmiKv1myBitw1OAu2kK0s5qix6B-_F2Y
+@GusRefreshToken = 4/FU2GGExiHRxbZV0/kDhJ/kwMM04bV59+vi/XJ4hac=
 
-@ProductId = 6532b0b7-e5b1-4edc-98f7-e9536b36571f
+@ProductId = 1bf0735d-1660-441e-b63e-eb08dc1c92b6
+
 
 ###
-POST {{BaseUrl}}
+POST {{BaseUrl}}/items
 Authorization: Bearer {{GusAccessToken}}
 Content-Type: application/json
 
@@ -14,3 +15,18 @@ Content-Type: application/json
     "ProductId": "{{ProductId}}",
     "Quantity": 1
 }
+
+
+###
+GET {{BaseUrl}}/items
+Authorization: Bearer {{GusAccessToken}}
+
+
+###
+GET {{BaseUrl}}/items/530c501e-9630-4288-842c-05a7cb08a288
+Authorization: Bearer {{GusAccessToken}}
+
+
+###
+DELETE {{BaseUrl}}/items/530c501e-9630-4288-842c-05a7cb08a288
+Authorization: Bearer {{GusAccessToken}}

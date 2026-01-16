@@ -1,10 +1,11 @@
+using E_Commerce.Models.Common;
 using E_Commerce.Models.Products;
 using E_Commerce.Results;
 using E_Commerce.Results.Errors;
 
 namespace E_Commerce.Models.Carts;
 
-public sealed class CartItem
+public sealed class CartItem : AuditableEntity
 {
     public Guid CartId { get; private set; }
     public Guid ProductId { get; private set; }

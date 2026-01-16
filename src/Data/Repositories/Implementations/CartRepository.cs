@@ -21,8 +21,28 @@ public class CartRepository(AppDbContext context) : ICartRepository
         return await context.Carts.FirstOrDefaultAsync(c => c.CustomerId == customerId, ct);
     }
 
+    public async Task<CartItem?> GetItemAsync(Guid cartItemId, CancellationToken ct)
+    {
+        return await context.CartItems.FirstOrDefaultAsync(ci => ci.Id == cartItemId, ct);
+    }
+
+    public async Task<List<CartItem>> GetItemsAsync(Guid cartId, CancellationToken ct)
+    {
+        return await context.CartItems.Where(ci => ci.CartId == cartId).ToListAsync(ct);
+    }
+
     public async Task<bool> IsItemExistAsync(Guid productId, Guid cartId, CancellationToken ct)
     {
         return await context.CartItems.AnyAsync(ci => ci.CartId == cartId && ci.ProductId == productId, ct);
+    }
+
+    public async Task<bool> IsItemExistAsync(Guid cartItemId, CancellationToken ct)
+    {
+        return await context.CartItems.AnyAsync(ci => ci.Id == cartItemId, ct);
+    }
+
+    public void RemoveItemAsync(CartItem cartItem)
+    {
+        context.CartItems.Remove(cartItem);
     }
 }

@@ -11,6 +11,7 @@ public static class CartItemMapper
 
         return new CartItemDto
         {
+            Id = cartItem.Id,
             CartId = cartItem.CartId,
             ProductId = cartItem.ProductId,
             Quantity = cartItem.Quantity,
