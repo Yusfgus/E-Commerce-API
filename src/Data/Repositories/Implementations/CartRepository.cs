@@ -20,4 +20,9 @@ public class CartRepository(AppDbContext context) : ICartRepository
     {
         return await context.Carts.FirstOrDefaultAsync(c => c.CustomerId == customerId, ct);
     }
+
+    public async Task<bool> IsItemExistAsync(Guid productId, Guid cartId, CancellationToken ct)
+    {
+        return await context.CartItems.AnyAsync(ci => ci.CartId == cartId && ci.ProductId == productId, ct);
+    }
 }

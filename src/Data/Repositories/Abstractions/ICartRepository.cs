@@ -7,4 +7,5 @@ public interface ICartRepository
     Task<Cart?> GetByCustomerIdAsync(Guid customerId, CancellationToken ct);
     Task AddItemAsync(CartItem cartItem, CancellationToken ct);
     Task AddAsync(Cart cart, CancellationToken ct);
+    Task<bool> IsItemExistAsync(Guid productId, Guid cartId, CancellationToken ct);
 }

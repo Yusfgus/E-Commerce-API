@@ -21,5 +21,17 @@ public static class CartErrors
         Error.NotFound(
             code: "CART_ITEM_NOT_FOUND",
             description: "Cart item not found");
+
+// -----
+
+    public static Error NotFound(Guid customerId) =>
+        Error.NotFound(
+            code: "CART_NOT_FOUND",
+            description: $"Cart with customer id '{customerId}' is not found");
+
+    public static Error ItemAlreadyAdded =>
+        Error.NotFound(
+            code: "CART_ITEM_ALREADY_ADDED",
+            description: "This item is already added to the cart");
 }
 

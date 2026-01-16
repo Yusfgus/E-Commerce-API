@@ -26,4 +26,11 @@ public static class CustomerErrors
         Error.Validation(
             code: "CUSTOMER_INVALID_BILLING_ADDRESS",
             description: "Billing address is invalid");
+
+// -----
+
+    public static Error NotFound(Guid id) =>
+        Error.NotFound(
+            code: "CUSTOMER_NOT_FOUND",
+            description: $"Customer with id '{id}' not found");
 }

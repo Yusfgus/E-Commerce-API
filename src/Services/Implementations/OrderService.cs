@@ -8,11 +8,11 @@ using E_Commerce.Results.Errors;
 
 namespace E_Commerce.Services.Implementations;
 
-public class OrderService(IOrderRepository orderRepo, IUserRepository customerRepo) : IOrderService
+public class OrderService(IUnitOfWork uow) : IOrderService
 {
     public async Task<Result<OrderDto>> GetByIdAsync(Guid id, CancellationToken ct)
     {
-        Order? order = await orderRepo.GetByIdAsync(id, ct);
+        Order? order = await uow.OrderRepo.GetByIdAsync(id, ct);
 
         if (order is null)
             return OrderErrors.OrderNotFound(id);
@@ -25,12 +25,12 @@ public class OrderService(IOrderRepository orderRepo, IUserRepository customerRe
                                                                         int pageSize,
                                                                         CancellationToken ct)
     {
-        if (!await customerRepo.IsExist(customerId, ct))
-            return UserErrors.NotFound(customerId);
+        if (!await uow.CustomerRepo.IsExist(customerId, ct))
+            return CustomerErrors.NotFound(customerId);
 
-        List<Order> orders = await orderRepo.GetByCustomerIdAsync(customerId, page, pageSize, ct);
+        List<Order> orders = await uow.OrderRepo.GetByCustomerIdAsync(customerId, page, pageSize, ct);
 
-        int totalCount = await orderRepo.CountAsync(customerId, ct);
+        int totalCount = await uow.OrderRepo.CountAsync(customerId, ct);
 
         return PaginatedDto<OrderDto>.Create(
             page,

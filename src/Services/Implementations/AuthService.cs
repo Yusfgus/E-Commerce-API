@@ -8,21 +8,18 @@ using E_Commerce.Models.Auth;
 using E_Commerce.Services.Identity;
 using E_Commerce.Requests.Auth;
 using E_Commerce.Results.Errors;
+using E_Commerce.Models.Carts;
 
 namespace E_Commerce.Services.Implementations;
 
-public class AuthService(IUserRepository userRepo,
-                         ICustomerRepository customerRepo,
-                         IVendorRepository vendorRepo,
-                         IAdminRepository adminRepo,
-                         JwtTokenProvider tokenProvider,
-                         IUnitOfWork uow) 
-    : IAuthService
+public class AuthService(IUnitOfWork uow, JwtTokenProvider tokenProvider) : IAuthService
 {
     public async Task<Result<UserDto>> RegisterCustomerAsync(RegisterCustomerRequest request, CancellationToken ct)
     {
         ArgumentNullException.ThrowIfNull(request);
 
+        // create user
+        
         var userResult = await RegisterUserAsync(request, UserRole.Customer, ct);
 
         if (userResult.IsFailure)
@@ -32,7 +29,7 @@ public class AuthService(IUserRepository userRepo,
 
         User user = userResult.Value!;
 
-        await userRepo.AddAsync(user, ct);
+        // create customer
 
         var customerResult = Customer.Create
         (
@@ -50,7 +47,24 @@ public class AuthService(IUserRepository userRepo,
 
         Customer customer = customerResult.Value!;
 
-        await customerRepo.AddAsync(customer, ct);
+        // create cart
+
+        var cartResult = Cart.Create(user.Id);
+
+        if (cartResult.IsFailure)
+        {
+            return cartResult.Errors;
+        }
+
+        Cart cart = cartResult.Value!;
+
+        // save data
+
+        await uow.UserRepo.AddAsync(user, ct);
+
+        await uow.CustomerRepo.AddAsync(customer, ct);
+
+        await uow.CartRepo.AddAsync(cart, ct);
 
         await uow.SaveChangesAsync(ct);
 
@@ -70,7 +84,7 @@ public class AuthService(IUserRepository userRepo,
 
         User user = userResult.Value!;
 
-        await userRepo.AddAsync(user, ct);
+        await uow.UserRepo.AddAsync(user, ct);
 
         var vendorResult = Vendor.Create
         (
@@ -85,7 +99,7 @@ public class AuthService(IUserRepository userRepo,
 
         Vendor vendor = vendorResult.Value!;
 
-        await vendorRepo.AddAsync(vendor, ct);
+        await uow.VendorRepo.AddAsync(vendor, ct);
 
         await uow.SaveChangesAsync(ct);
 
@@ -105,7 +119,7 @@ public class AuthService(IUserRepository userRepo,
 
         User user = userResult.Value!;
 
-        await userRepo.AddAsync(user, ct);
+        await uow.UserRepo.AddAsync(user, ct);
 
         var adminResult = Admin.Create
         (
@@ -119,7 +133,7 @@ public class AuthService(IUserRepository userRepo,
 
         Admin admin = adminResult.Value!;
 
-        await adminRepo.AddAsync(admin, ct);
+        await uow.AdminRepo.AddAsync(admin, ct);
 
         await uow.SaveChangesAsync(ct);
 
@@ -128,10 +142,10 @@ public class AuthService(IUserRepository userRepo,
 
     private async Task<Result<User>> RegisterUserAsync(RegisterUserRequest request, UserRole role, CancellationToken ct)
     {
-        if (await userRepo.IsEmailExist(request.Email, ct))
+        if (await uow.UserRepo.IsEmailExist(request.Email, ct))
             return UserErrors.EmailInUse(request.Email!);
 
-        if (request.PhoneNumber is not null && await userRepo.IsPhoneNumberExist(request.PhoneNumber, ct))
+        if (request.PhoneNumber is not null && await uow.UserRepo.IsPhoneNumberExist(request.PhoneNumber, ct))
             return UserErrors.PhoneNumberInUse(request.PhoneNumber);
 
         var userResult = User.Create
@@ -147,7 +161,7 @@ public class AuthService(IUserRepository userRepo,
     
     public async Task<Result<TokenDto>> LogInAsync(LogInUserRequest request, CancellationToken ct)
     {
-        User? user = await userRepo.GetByEmailAsTrackingAsync(request.Email!, ct);
+        User? user = await uow.UserRepo.GetByEmailAsTrackingAsync(request.Email!, ct);
 
         if (user is null)
             return LoginErrors.LoginInvalidCredentials;

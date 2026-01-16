@@ -9,16 +9,12 @@ using E_Commerce.Results.Errors;
 
 namespace E_Commerce.Services.Implementations;
 
-public class ProductService(IProductRepository productRepo,
-                            ICategoryRepository categoryRepo,
-                            IUserRepository userRepo,
-                            IUnitOfWork uow)
-    : IProductService
+public class ProductService(IUnitOfWork uow) : IProductService
 {
     public async Task<Result<PaginatedDto<ProductDto>>> GetAllPagedAsync(int page, int pageSize, CancellationToken ct)
     {
-        List<Product> products = await productRepo.GetAllPagedAsync(page, pageSize, ct);
-        int totalCount = await productRepo.CountAsync(ct);
+        List<Product> products = await uow.ProductRepo.GetAllPagedAsync(page, pageSize, ct);
+        int totalCount = await uow.ProductRepo.CountAsync(ct);
 
         return PaginatedDto<ProductDto>.Create(
             page,
@@ -29,7 +25,7 @@ public class ProductService(IProductRepository productRepo,
 
     public async Task<Result<ProductDto>> GetByIdAsync(Guid id, CancellationToken ct)
     {
-        Product? product = await productRepo.GetByIdAsync(id, ct);
+        Product? product = await uow.ProductRepo.GetByIdAsync(id, ct);
 
         if (product is null)
             return ProductErrors.NotFound(id);
@@ -39,7 +35,7 @@ public class ProductService(IProductRepository productRepo,
 
     public async Task<Result<ProductDto>> GetByNameAsync(string name, CancellationToken ct)
     {
-        Product? product = await productRepo.GetByNameAsync(name, ct);
+        Product? product = await uow.ProductRepo.GetByNameAsync(name, ct);
 
         if (product is null)
             return ProductErrors.NotFound(name);
@@ -49,13 +45,13 @@ public class ProductService(IProductRepository productRepo,
 
     public async Task<Result<ProductDto>> CreateAsync(CreateProductRequest request, Guid vendorId, CancellationToken ct)
     {
-        if (!await userRepo.IsExist(vendorId, ct))
+        if (!await uow.VendorRepo.IsExist(vendorId, ct))
             return ProductErrors.VendorNotFound(vendorId);
 
-        if (await productRepo.IsExistAsync(request.Name!, ct))
+        if (await uow.ProductRepo.IsExistAsync(request.Name!, ct))
             return ProductErrors.NameInUse(request.Name!);
 
-        Category? category = await categoryRepo.GetByNameAsync(request.Category!, ct);
+        Category? category = await uow.CategoryRepo.GetByNameAsync(request.Category!, ct);
 
         if (category is null)
             return CategoryErrors.NotFound(request.Category!);
@@ -78,7 +74,7 @@ public class ProductService(IProductRepository productRepo,
 
         Product product = productResult.Value!;
 
-        await productRepo.AddAsync(product, ct);
+        await uow.ProductRepo.AddAsync(product, ct);
 
         await uow.SaveChangesAsync(ct);
 
@@ -89,7 +85,7 @@ public class ProductService(IProductRepository productRepo,
 
     public async Task<Result> UpdateAsync(Guid id, Guid currentVendorId, UpdateProductRequest request, CancellationToken ct)
     {
-        var product = await productRepo.GetByIdAsTrackingAsync(id, ct);
+        var product = await uow.ProductRepo.GetByIdAsTrackingAsync(id, ct);
 
         if (product is null)
             return ProductErrors.NotFound(id);
@@ -101,7 +97,7 @@ public class ProductService(IProductRepository productRepo,
 
         if (request.Category is not null)
         {
-            var category = await categoryRepo.GetByNameAsync(request.Category, ct);
+            var category = await uow.CategoryRepo.GetByNameAsync(request.Category, ct);
 
             if (category is null)
                 return CategoryErrors.NotFound(request.Category);
@@ -151,12 +147,12 @@ public class ProductService(IProductRepository productRepo,
 
     public async Task<Result> DeleteAsync(Guid id, CancellationToken ct)
     {
-        Product? product = await productRepo.GetByIdAsync(id, ct);
+        Product? product = await uow.ProductRepo.GetByIdAsync(id, ct);
 
         if (product is null)
             return ProductErrors.NotFound(id);
 
-        await productRepo.RemoveAsync(product, ct);
+        await uow.ProductRepo.RemoveAsync(product, ct);
 
         await uow.SaveChangesAsync(ct);
 

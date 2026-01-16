@@ -9,25 +9,23 @@ using E_Commerce.Services.Abstractions;
 
 namespace E_Commerce.Services.Implementations;
 
-public class CartService(ICartRepository cartRepo,
-                         IProductRepository productRepo,
-                         IUnitOfWork uow) 
-    : ICartService
+public class CartService(IUnitOfWork uow) : ICartService
 {
     public async Task<Result<CartItemDto>> AddCartItem(AddCartItemRequest request, Guid customerId, CancellationToken ct)
     {
-        if (!await productRepo.IsExistAsync(request.ProductId, ct))
+        if (!await uow.ProductRepo.IsExistAsync(request.ProductId, ct))
             return ProductErrors.NotFound(request.ProductId);
 
-        var result = await CreateCartIfNotExistsAsync(customerId, ct);
+        Cart? cart = await uow.CartRepo.GetByCustomerIdAsync(customerId, ct);
 
-        if (result.IsFailure)
-        {
-            return result.Errors;
-        }
+        if (cart is null)
+            return CartErrors.NotFound(customerId);
+
+        if (await uow.CartRepo.IsItemExistAsync(productId: request.ProductId, cartId: cart.Id, ct))
+            return CartErrors.ItemAlreadyAdded;
 
         var cartItemResult = CartItem.Create(
-            cartId: result.Value!,
+            cartId: cart.Id,
             productId: request.ProductId,
             quantity: request.Quantity
         );
@@ -39,7 +37,7 @@ public class CartService(ICartRepository cartRepo,
 
         CartItem cartItem = cartItemResult.Value!;
 
-        await cartRepo.AddItemAsync(cartItem, ct);
+        await uow.CartRepo.AddItemAsync(cartItem, ct);
 
         await uow.SaveChangesAsync(ct);
 
@@ -48,23 +46,18 @@ public class CartService(ICartRepository cartRepo,
 
     public async Task<Result> CreateCartAsync(Guid customerId, CancellationToken ct)
     {
-        Cart? cart = await cartRepo.GetByCustomerIdAsync(customerId, ct);
-        
-        if (cart is null)
+        var cartResult = Cart.Create(customerId);
+
+        if (cartResult.IsFailure)
         {
-            var cartResult = Cart.Create(customerId);
-
-            if (cartResult.IsFailure)
-            {
-                return cartResult.Errors;
-            }
-
-            cart = cartResult.Value!;
-
-            await cartRepo.AddAsync(cart, ct);
-
-            await uow.SaveChangesAsync(ct);
+            return cartResult.Errors;
         }
+
+        Cart cart = cartResult.Value!;
+
+        await uow.CartRepo.AddAsync(cart, ct);
+
+        await uow.SaveChangesAsync(ct);
 
         return Result.Success;
     }

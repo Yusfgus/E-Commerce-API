@@ -8,13 +8,13 @@ using E_Commerce.Services.Abstractions;
 
 namespace E_Commerce.Services.Implementations;
 
-public class AdminService(IUserRepository userRepo, IUnitOfWork uow) : IAdminService
+public class AdminService(IUnitOfWork uow) : IAdminService
 {
     public async Task<Result<PaginatedDto<UserDto>>> GetUsersAsync(int page, int pageSize, CancellationToken ct)
     {
-        List<User> users = await userRepo.GetAllPagedAsync(page, pageSize, ct);
+        List<User> users = await uow.UserRepo.GetAllPagedAsync(page, pageSize, ct);
         
-        int totalCount = await userRepo.CountAsync(ct);
+        int totalCount = await uow.UserRepo.CountAsync(ct);
 
         return PaginatedDto<UserDto>.Create(
             page,
@@ -25,7 +25,7 @@ public class AdminService(IUserRepository userRepo, IUnitOfWork uow) : IAdminSer
 
     public async Task<Result<UserDto>> GetUserByIdAsync(Guid id, CancellationToken ct)
     {
-        User? user = await userRepo.GetByIdAsync(id, ct);
+        User? user = await uow.UserRepo.GetByIdAsync(id, ct);
 
         return user is null 
                 ? UserErrors.NotFound(id)
@@ -34,12 +34,12 @@ public class AdminService(IUserRepository userRepo, IUnitOfWork uow) : IAdminSer
 
     public async Task<Result> DeleteUserAsync(Guid id, CancellationToken ct)
     {
-        User? user = await userRepo.GetByIdAsync(id, ct);
+        User? user = await uow.UserRepo.GetByIdAsync(id, ct);
 
         if (user is null)
             return UserErrors.NotFound(id);
 
-        await userRepo.RemoveAsync(user, ct);
+        await uow.UserRepo.RemoveAsync(user, ct);
 
         await uow.SaveChangesAsync(ct);
 
@@ -48,7 +48,7 @@ public class AdminService(IUserRepository userRepo, IUnitOfWork uow) : IAdminSer
     
     public async Task<Result> DeactivateUserAsync(Guid id, CancellationToken ct)
     {
-        User? user = await userRepo.GetByIdAsTrackingAsync(id, ct);
+        User? user = await uow.UserRepo.GetByIdAsTrackingAsync(id, ct);
 
         if (user is null)
             return UserErrors.NotFound(id);
@@ -67,7 +67,7 @@ public class AdminService(IUserRepository userRepo, IUnitOfWork uow) : IAdminSer
 
     public async Task<Result> ActivateUserAsync(Guid id, CancellationToken ct)
     {
-        User? user = await userRepo.GetByIdAsync(id, ct);
+        User? user = await uow.UserRepo.GetByIdAsync(id, ct);
 
         if (user is null)
             return UserErrors.NotFound(id);

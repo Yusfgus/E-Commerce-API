@@ -9,18 +9,18 @@ using E_Commerce.Services.Abstractions;
 
 namespace E_Commerce.Services.Implementations;
 
-public class CategoryService(ICategoryRepository categoryRepo, IUnitOfWork uow) : ICategoryService
+public class CategoryService(IUnitOfWork uow) : ICategoryService
 {
     public async Task<Result<List<CategoryDto>>> GetAllAsync(int page, int pageSize, CancellationToken ct)
     {
-        List<Category> categories = await categoryRepo.GetAllAsync(page, pageSize, ct);
+        List<Category> categories = await uow.CategoryRepo.GetAllAsync(page, pageSize, ct);
 
         return categories.ToDto();
     }
 
     public async Task<Result<CategoryDto>> GetByIdAsync(Guid id, CancellationToken ct)
     {
-        Category? category = await categoryRepo.GetByIdAsync(id, ct);
+        Category? category = await uow.CategoryRepo.GetByIdAsync(id, ct);
 
         if (category is null)
             return CategoryErrors.NotFound(id);
@@ -30,7 +30,7 @@ public class CategoryService(ICategoryRepository categoryRepo, IUnitOfWork uow) 
 
     public async Task<Result<CategoryDto>> GetByNameAsync(String name, CancellationToken ct)
     {
-        Category? category = await categoryRepo.GetByNameAsync(name, ct);
+        Category? category = await uow.CategoryRepo.GetByNameAsync(name, ct);
 
         if (category is null)
             return CategoryErrors.NotFound(name);
@@ -40,7 +40,7 @@ public class CategoryService(ICategoryRepository categoryRepo, IUnitOfWork uow) 
 
     public async Task<Result<CategoryDto>> CreateAsync(CreateCategoryRequest request, CancellationToken ct)
     {
-        if (await categoryRepo.IsExit(request.Name, ct))
+        if (await uow.CategoryRepo.IsExit(request.Name, ct))
             return CategoryErrors.NameTaken;
 
         var categoryResult = Category.Create(request.Name);
@@ -52,7 +52,7 @@ public class CategoryService(ICategoryRepository categoryRepo, IUnitOfWork uow) 
 
         Category category = categoryResult.Value!;
 
-        await categoryRepo.AddAsync(category, ct);
+        await uow.CategoryRepo.AddAsync(category, ct);
 
         await uow.SaveChangesAsync(ct);
 
@@ -61,7 +61,7 @@ public class CategoryService(ICategoryRepository categoryRepo, IUnitOfWork uow) 
 
     public async Task<Result> UpdateAsync(Guid id, UpdateCategoryRequest request, CancellationToken ct)
     {
-        Category? category = await categoryRepo.GetByIdAsTrackingAsync(id, ct);
+        Category? category = await uow.CategoryRepo.GetByIdAsTrackingAsync(id, ct);
 
         if (category is null)
             return CategoryErrors.NotFound(id);
@@ -70,7 +70,7 @@ public class CategoryService(ICategoryRepository categoryRepo, IUnitOfWork uow) 
 
         if (request.Name is not null)
         {
-            if(await categoryRepo.IsExit(request.Name, ct))
+            if(await uow.CategoryRepo.IsExit(request.Name, ct))
                 return CategoryErrors.NameTaken;
 
             var result = category.UpdateName(request.Name);
@@ -90,15 +90,15 @@ public class CategoryService(ICategoryRepository categoryRepo, IUnitOfWork uow) 
 
     public async Task<Result> DeleteAsync(Guid id, CancellationToken ct)
     {
-        Category? category = await categoryRepo.GetByIdAsync(id, ct);
+        Category? category = await uow.CategoryRepo.GetByIdAsync(id, ct);
 
         if (category is null)
             return CategoryErrors.NotFound(id);
 
-        if (await categoryRepo.HasProductsAsync(id, ct))
+        if (await uow.CategoryRepo.HasProductsAsync(id, ct))
             return CategoryErrors.HasProducts;
 
-        categoryRepo.Remove(category);
+        uow.CategoryRepo.Remove(category);
 
         await uow.SaveChangesAsync(ct);
 

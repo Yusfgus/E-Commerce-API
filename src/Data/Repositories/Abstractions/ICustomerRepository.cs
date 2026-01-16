@@ -5,4 +5,5 @@ namespace E_Commerce.Data.Repositories.Abstractions;
 public interface ICustomerRepository
 {
     Task AddAsync(Customer customer, CancellationToken ct);
+    Task<bool> IsExist(Guid id, CancellationToken ct);
 }
