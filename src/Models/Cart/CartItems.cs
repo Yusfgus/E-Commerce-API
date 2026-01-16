@@ -41,27 +41,6 @@ public sealed class CartItem : AuditableEntity
 
     // ---------------- Domain behaviors ----------------
 
-    public Result IncreaseQuantity(int amount)
-    {
-        if (amount <= 0)
-            return CartItemErrors.InvalidQuantity;
-
-        Quantity += amount;
-        return Result.Success;
-    }
-
-    public Result DecreaseQuantity(int amount)
-    {
-        if (amount <= 0)
-            return CartItemErrors.InvalidQuantity;
-
-        if (Quantity - amount <= 0)
-            return CartItemErrors.QuantityBelowOne;
-
-        Quantity -= amount;
-        return Result.Success;
-    }
-
     public Result SetQuantity(int quantity)
     {
         if (quantity <= 0)

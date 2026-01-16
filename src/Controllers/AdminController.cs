@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace E_Commerce.Controllers;
 
 [ApiController]
-[Route("api/admin")]
-// [Authorize(Roles = nameof(UserRole.Admin))]
+[Route("api")]
+[Authorize(Roles = nameof(UserRole.Admin))]
 public class AdminController(IAdminService adminService) : ApiController
 {
     

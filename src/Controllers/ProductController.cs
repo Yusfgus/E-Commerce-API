@@ -17,7 +17,7 @@ public class ProductController(IProductService productService) : ApiController
     // -------------------- PUBLIC --------------------
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, CancellationToken ct = default)
+    public async Task<IActionResult> GetAll(int page = 1, int pageSize = 10, CancellationToken ct = default)
     {
         var result = await productService.GetAllPagedAsync(page, pageSize, ct);
 
@@ -55,7 +55,7 @@ public class ProductController(IProductService productService) : ApiController
 
     [HttpPost]
     [Authorize(Roles = nameof(UserRole.Vendor))]
-    public async Task<IActionResult> Create([FromBody] CreateProductRequest request, CancellationToken ct = default)
+    public async Task<IActionResult> Create(CreateProductRequest request, CancellationToken ct = default)
     {
         Guid vendorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -70,7 +70,7 @@ public class ProductController(IProductService productService) : ApiController
 
     [HttpPut("{id:guid}")]
     [Authorize(Roles = nameof(UserRole.Vendor))]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductRequest request, CancellationToken ct = default)
+    public async Task<IActionResult> Update(Guid id, UpdateProductRequest request, CancellationToken ct = default)
     {
         Guid vendorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 

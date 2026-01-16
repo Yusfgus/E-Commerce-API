@@ -1,33 +1,43 @@
-@BaseUrl = https://localhost:7262/api/Admin
+@BaseUrl = https://localhost:7262/api
+
+@AdminAccessToken = eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjhiYzVlMTQ4LTYxN2EtNDhhYi1hNmVjLTNhOTJmZjU4Yzk0ZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluMUBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc2ODY1NDM5MywiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.Kwngl3eUlIY8Les6G2JGJo5OuS35NuM4PU8Dw3fasVw
+@AdminRefreshToken = FP6Tb+sZf4dAE1PCDSCUn8Blax6aV1Y3J6rfgJAjRbI=
 
 @GusId = 0a057ba8-a9bd-41d3-a6df-9e137af155c6
-@AwadId = ad472048-e82d-47ea-a1ce-e95f0056d083
 
+@AwadId = ad472048-e82d-47ea-a1ce-e95f0056d083
 
 ###
 GET {{BaseUrl}}/users
+Authorization: Bearer {{AdminAccessToken}}
 
 
 ###
 GET {{BaseUrl}}/users/{{GusId}}
+Authorization: Bearer {{AdminAccessToken}}
 
 
 ###
 GET {{BaseUrl}}/users/{{AwadId}}
+Authorization: Bearer {{AdminAccessToken}}
 
 
 ###
 DELETE {{BaseUrl}}/users/{{GusId}}
+Authorization: Bearer {{AdminAccessToken}}
 
 
 ###
 DELETE {{BaseUrl}}/users/{{AwadId}}
+Authorization: Bearer {{AdminAccessToken}}
 
 
 ###
 POST {{BaseUrl}}/users/{{GusId}}/deactivate
+Authorization: Bearer {{AdminAccessToken}}
 
 
 ###
 POST {{BaseUrl}}/users/{{GusId}}/activate
+Authorization: Bearer {{AdminAccessToken}}
 

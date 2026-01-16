@@ -14,7 +14,7 @@ public class AuthController(IAuthService authService) : ApiController
 {
     [HttpPost("register/customer")]
     [AllowAnonymous]
-    public async Task<IActionResult> RegisterCustomer([FromBody] RegisterCustomerRequest request, CancellationToken ct = default)
+    public async Task<IActionResult> RegisterCustomer(RegisterCustomerRequest request, CancellationToken ct = default)
     {
         var result = await authService.RegisterCustomerAsync(request, ct);
 
@@ -26,7 +26,7 @@ public class AuthController(IAuthService authService) : ApiController
 
     [HttpPost("register/vendor")]
     [AllowAnonymous]
-    public async Task<IActionResult> RegisterVendor([FromBody] RegisterVendorRequest request, CancellationToken ct = default)
+    public async Task<IActionResult> RegisterVendor(RegisterVendorRequest request, CancellationToken ct = default)
     {
         var result = await authService.RegisterVendorAsync(request, ct);
 
@@ -38,7 +38,7 @@ public class AuthController(IAuthService authService) : ApiController
 
     [HttpPost("register/admin")]
     [Authorize(Roles = nameof(UserRole.Admin))]
-    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminRequest request, CancellationToken ct = default)
+    public async Task<IActionResult> RegisterAdmin(RegisterAdminRequest request, CancellationToken ct = default)
     {
         var result = await authService.RegisterAdminAsync(request, ct);
 
@@ -50,7 +50,7 @@ public class AuthController(IAuthService authService) : ApiController
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<IActionResult> LogIn([FromBody] LogInUserRequest request, CancellationToken ct = default)
+    public async Task<IActionResult> LogIn(LogInUserRequest request, CancellationToken ct = default)
     {
         var result = await authService.LogInAsync(request, ct);
         
@@ -70,7 +70,7 @@ public class AuthController(IAuthService authService) : ApiController
 
     [HttpPost("refresh")]
     [AllowAnonymous]
-    public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request, CancellationToken ct = default)
+    public async Task<IActionResult> Refresh(RefreshTokenRequest request, CancellationToken ct = default)
     {
         var result = await authService.Refresh(request, ct);
         

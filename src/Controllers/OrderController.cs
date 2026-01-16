@@ -11,7 +11,7 @@ namespace E_Commerce.Controllers;
 public class OrderController(IOrderService OrderService) : ApiController
 {
     [HttpGet]
-    public async Task<IActionResult> GetCustomerOrders(Guid customerId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10, CancellationToken ct = default)
+    public async Task<IActionResult> GetCustomerOrders(Guid customerId, int page = 1, int pageSize = 10, CancellationToken ct = default)
     {
         var result = await OrderService.GetByCustomerIdAsync(customerId, page, pageSize, ct);
 

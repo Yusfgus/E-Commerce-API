@@ -39,6 +39,11 @@ public static class ProductErrors
 
 // ---------
 
+    public static Error NotFound() =>
+        Error.NotFound(
+            code: "PRODUCT_NOT_FOUND",
+            description: $"Product not found");
+
     public static Error NotFound(Guid id) =>
         Error.NotFound(
             code: "PRODUCT_NOT_FOUND",

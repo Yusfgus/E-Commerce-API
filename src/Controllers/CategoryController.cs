@@ -12,7 +12,7 @@ public class CategoriesController(ICategoryService categoryService) : ApiControl
     // -------------------- PUBLIC --------------------
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, CancellationToken ct = default)
+    public async Task<IActionResult> GetAll(int page = 1, int pageSize = 10, CancellationToken ct = default)
     {
         var result = await categoryService.GetAllAsync(page, pageSize, ct);
 

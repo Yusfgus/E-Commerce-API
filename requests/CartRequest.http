@@ -5,6 +5,8 @@
 
 @ProductId = 1bf0735d-1660-441e-b63e-eb08dc1c92b6
 
+@ItemId = ea9a8260-f4bc-457f-bda5-e494d7e4bd1c
+
 
 ###
 POST {{BaseUrl}}/items
@@ -13,7 +15,7 @@ Content-Type: application/json
 
 {
     "ProductId": "{{ProductId}}",
-    "Quantity": 1
+    "Quantity": 5
 }
 
 
@@ -23,10 +25,20 @@ Authorization: Bearer {{GusAccessToken}}
 
 
 ###
-GET {{BaseUrl}}/items/530c501e-9630-4288-842c-05a7cb08a288
+GET {{BaseUrl}}/items/{{ItemId}}
 Authorization: Bearer {{GusAccessToken}}
 
 
 ###
-DELETE {{BaseUrl}}/items/530c501e-9630-4288-842c-05a7cb08a288
+PUT {{BaseUrl}}/items/{{ItemId}}
+Authorization: Bearer {{GusAccessToken}}
+Content-Type: application/json
+
+{
+    "Quantity": "4"
+}
+
+
+###
+DELETE {{BaseUrl}}/items/{{ItemId}}
 Authorization: Bearer {{GusAccessToken}}

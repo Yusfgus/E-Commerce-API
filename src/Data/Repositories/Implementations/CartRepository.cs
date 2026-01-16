@@ -21,14 +21,37 @@ public class CartRepository(AppDbContext context) : ICartRepository
         return await context.Carts.FirstOrDefaultAsync(c => c.CustomerId == customerId, ct);
     }
 
-    public async Task<CartItem?> GetItemAsync(Guid cartItemId, CancellationToken ct)
+    public async Task<CartItem?> GetItemAsTrackingAsync(Guid customerId, Guid cartItemId, CancellationToken ct)
     {
-        return await context.CartItems.FirstOrDefaultAsync(ci => ci.Id == cartItemId, ct);
+        return await context.CartItems.AsTracking()
+                            .Include(ci => ci.Cart)
+                            .FirstOrDefaultAsync(ci => 
+                                ci.Id == cartItemId &&
+                                ci.Cart.Customer.UserId == customerId &&
+                                ci.Cart.Status == CartStatus.Active, ct
+                            );
     }
 
-    public async Task<List<CartItem>> GetItemsAsync(Guid cartId, CancellationToken ct)
+    public async Task<CartItem?> GetItemAsync(Guid customerId, Guid cartItemId, CancellationToken ct)
     {
-        return await context.CartItems.Where(ci => ci.CartId == cartId).ToListAsync(ct);
+        return await context.CartItems
+                            .Include(ci => ci.Cart)
+                            .FirstOrDefaultAsync(ci => 
+                                ci.Id == cartItemId &&
+                                ci.Cart.Customer.UserId == customerId &&
+                                ci.Cart.Status == CartStatus.Active, ct
+                            );
+    }
+
+    public async Task<List<CartItem>> GetItemsAsync(Guid customerId, CancellationToken ct)
+    {
+        return await context.CartItems
+                            .Include(ci => ci.Cart)
+                            .Where(ci => 
+                                ci.Cart.Customer.UserId == customerId &&
+                                ci.Cart.Status == CartStatus.Active
+                            )
+                            .ToListAsync(ct);
     }
 
     public async Task<bool> IsItemExistAsync(Guid productId, Guid cartId, CancellationToken ct)

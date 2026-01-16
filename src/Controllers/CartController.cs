@@ -13,7 +13,7 @@ namespace E_Commerce.Controllers;
 public class CartController(ICartService cartService) : ApiController
 {
     [HttpPost("items")]
-    public async Task<IActionResult> AddCartItem(AddCartItemRequest request, CancellationToken ct)
+    public async Task<IActionResult> AddCartItem(AddCartItemRequest request, CancellationToken ct = default)
     {
         Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -26,11 +26,11 @@ public class CartController(ICartService cartService) : ApiController
     }
     
     [HttpDelete("items/{cartItemId}")]
-    public async Task<IActionResult> RemoveCartItem(Guid cartItemId, CancellationToken ct)
+    public async Task<IActionResult> RemoveCartItem(Guid cartItemId, CancellationToken ct = default)
     {
         Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        var result = await cartService.RemoveCartItemAsync(cartItemId, ct);
+        var result = await cartService.RemoveCartItemAsync(customerId, cartItemId, ct);
 
         return result.Match(
             onSuccess: NoContent,
@@ -39,9 +39,11 @@ public class CartController(ICartService cartService) : ApiController
     }
 
     [HttpGet("items/{cartItemId}")]
-    public async Task<IActionResult> GetCartItemById(Guid cartItemId, CancellationToken ct)
+    public async Task<IActionResult> GetCartItemById(Guid cartItemId, CancellationToken ct = default)
     {
-        var result = await cartService.GetCartItemByIdAsync(cartItemId, ct);
+        Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        var result = await cartService.GetCartItemByIdAsync(customerId, cartItemId, ct);
 
         return result.Match(
             onSuccess: cartItem => Ok(cartItem),
@@ -50,7 +52,7 @@ public class CartController(ICartService cartService) : ApiController
     }
 
     [HttpGet("items")]
-    public async Task<IActionResult> GetCartItems(CancellationToken ct)
+    public async Task<IActionResult> GetCartItems(CancellationToken ct = default)
     {
         Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -61,4 +63,18 @@ public class CartController(ICartService cartService) : ApiController
             onFailure: Problem
         );
     }
+
+    [HttpPut("items/{cartItemId}")]
+    public async Task<IActionResult> UpdateQuantity(Guid cartItemId, UpdateCartItemQuantityRequest request, CancellationToken ct = default)
+    {
+        Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        var result = await cartService.UpdateCartItemQuantityAsync(customerId, cartItemId, request, ct);
+
+        return result.Match(
+            onSuccess: NoContent,
+            onFailure: Problem
+        );
+    }
+
 }
