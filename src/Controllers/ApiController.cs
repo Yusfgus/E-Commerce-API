@@ -1,4 +1,5 @@
-﻿using E_Commerce.Results;
+﻿using System.Security.Claims;
+using E_Commerce.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -54,5 +55,10 @@ public class ApiController : ControllerBase
         errors.ForEach(error => modelStateDictionary.AddModelError(error.Code, error.Description));
 
         return ValidationProblem(modelStateDictionary);
+    }
+
+    protected Guid GetUserId()
+    {
+        return Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
 }

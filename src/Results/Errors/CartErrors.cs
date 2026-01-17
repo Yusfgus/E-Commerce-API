@@ -30,7 +30,7 @@ public static class CartErrors
             description: $"No Cart for this customer was found");
 
     public static Error ItemAlreadyAdded =>
-        Error.NotFound(
+        Error.Conflict(
             code: "CART_ITEM_ALREADY_ADDED",
             description: "This item is already added to the cart");
 }

@@ -9,10 +9,11 @@ public sealed class Cart : AuditableEntity
 {
     public Guid CustomerId { get; private set; }
     public CartStatus Status { get; private set; }
+    // public DateTimeOffset? CheckedOutAt { get; private set; }
 
     // Navigation
     public Customer Customer { get; private set; } = null!;
-    public ICollection<CartItem> Items { get; private set; } = new List<CartItem>();
+    public ICollection<CartItem> Items { get; private set; } = [];
 
     private Cart(Guid customerId)
     {
@@ -35,20 +36,25 @@ public sealed class Cart : AuditableEntity
         if (Status != CartStatus.Active)
             return CartErrors.CartNotActive;
 
+        if (Items.Any(i => i.ProductId == item.ProductId))
+            return CartErrors.ItemAlreadyAdded;
+
         Items.Add(item);
+
         return Result.Success;
     }
 
-    public Result RemoveItem(Guid productId)
+    public Result RemoveItem(Guid itemId)
     {
         if (Status != CartStatus.Active)
             return CartErrors.CartNotActive;
 
-        var item = Items.FirstOrDefault(i => i.ProductId == productId);
+        CartItem? item = Items.FirstOrDefault(i => i.Id == itemId);
         if (item is null)
             return CartErrors.ItemNotFound;
 
         Items.Remove(item);
+
         return Result.Success;
     }
 
@@ -57,10 +63,12 @@ public sealed class Cart : AuditableEntity
         if (Status != CartStatus.Active)
             return CartErrors.CartNotActive;
 
-        if (!Items.Any())
+        if (Items.Count == 0)
             return CartErrors.CartEmpty;
 
         Status = CartStatus.CheckedOut;
+        // CheckedOutAt = DateTimeOffset.UtcNow;
+
         return Result.Success;
     }
 }

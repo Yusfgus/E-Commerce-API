@@ -15,7 +15,7 @@ public class CartController(ICartService cartService) : ApiController
     [HttpPost("items")]
     public async Task<IActionResult> AddCartItem(AddCartItemRequest request, CancellationToken ct = default)
     {
-        Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Guid customerId = GetUserId();
 
         var result = await cartService.AddCartItemAsync(request, customerId, ct);
 
@@ -28,7 +28,7 @@ public class CartController(ICartService cartService) : ApiController
     [HttpDelete("items/{cartItemId}")]
     public async Task<IActionResult> RemoveCartItem(Guid cartItemId, CancellationToken ct = default)
     {
-        Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Guid customerId = GetUserId();
 
         var result = await cartService.RemoveCartItemAsync(customerId, cartItemId, ct);
 
@@ -41,7 +41,7 @@ public class CartController(ICartService cartService) : ApiController
     [HttpGet("items/{cartItemId}")]
     public async Task<IActionResult> GetCartItemById(Guid cartItemId, CancellationToken ct = default)
     {
-        Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Guid customerId = GetUserId();
 
         var result = await cartService.GetCartItemByIdAsync(customerId, cartItemId, ct);
 
@@ -54,7 +54,7 @@ public class CartController(ICartService cartService) : ApiController
     [HttpGet("items")]
     public async Task<IActionResult> GetCartItems(CancellationToken ct = default)
     {
-        Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Guid customerId = GetUserId();
 
         var result = await cartService.GetCartItemsAsync(customerId, ct);
 
@@ -67,7 +67,7 @@ public class CartController(ICartService cartService) : ApiController
     [HttpPut("items/{cartItemId}")]
     public async Task<IActionResult> UpdateQuantity(Guid cartItemId, UpdateCartItemQuantityRequest request, CancellationToken ct = default)
     {
-        Guid customerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Guid customerId = GetUserId();
 
         var result = await cartService.UpdateCartItemQuantityAsync(customerId, cartItemId, request, ct);
 

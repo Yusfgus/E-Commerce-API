@@ -40,8 +40,8 @@ public class OrderService(IUnitOfWork uow) : IOrderService
     }
 
 
-    public Task<Result<OrderDto>> CheckoutAsync(Guid customerId, CancellationToken ct)
+    public async Task<Result<OrderDto>> CheckoutAsync(Guid customerId, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException();        
     }
 }

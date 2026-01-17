@@ -64,7 +64,7 @@ public class AuthService(IUnitOfWork uow, JwtTokenProvider tokenProvider) : IAut
 
         await uow.CustomerRepo.AddAsync(customer, ct);
 
-        await uow.CartRepo.AddAsync(cart, ct);
+        await uow.CartRepo.CreateAsync(cart, ct);
 
         await uow.SaveChangesAsync(ct);
 

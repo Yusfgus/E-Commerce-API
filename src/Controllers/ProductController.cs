@@ -57,7 +57,7 @@ public class ProductController(IProductService productService) : ApiController
     [Authorize(Roles = nameof(UserRole.Vendor))]
     public async Task<IActionResult> Create(CreateProductRequest request, CancellationToken ct = default)
     {
-        Guid vendorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Guid vendorId = GetUserId();
 
         Result<ProductDto> result = await productService.CreateAsync(request, vendorId, ct);
 
@@ -72,7 +72,7 @@ public class ProductController(IProductService productService) : ApiController
     [Authorize(Roles = nameof(UserRole.Vendor))]
     public async Task<IActionResult> Update(Guid id, UpdateProductRequest request, CancellationToken ct = default)
     {
-        Guid vendorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Guid vendorId = GetUserId();
 
         var result = await productService.UpdateAsync(id, vendorId, request, ct);
 
